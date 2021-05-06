@@ -2,10 +2,18 @@ class Api::V1::AuthenticationController < Api::V1::ApplicationController
   before_action :authorize_request, except: :facebook
 
   def facebook
-    user = User.find_by(email: permitted_params[:email], uid: permitted_params[:uid])
+    oauth = Koala::Facebook::OAuth.new
+    new_access_info = oauth.exchange_access_token_info(permitted_token_params[:token])
+    new_access_token = new_access_info["access_token"]
+    new_access_expires_at = DateTime.now + new_access_info["expires_in"].to_i.seconds
+    graph = Koala::Facebook::API.new(new_access_token)
+    profile = graph.get_object('me', fields: 'id, name, email, picture')
+
+    user = User.find_by(email: profile['email'], uid: profile['id'])
 
     if !user
-      user = User.create(permitted_params)
+      createData = map_facebook_profile_to_user(profile)
+      user = User.create(createData)
       user.update(encrypted_password: SecureRandom.urlsafe_base64)
     end
 
@@ -15,7 +23,17 @@ class Api::V1::AuthenticationController < Api::V1::ApplicationController
 
   private
 
-  def permitted_params
-    standardized_params.permit(:email, :uid, :provider, :avatar_url, :full_name)
+  def map_facebook_profile_to_user(profile)
+    {
+      uid: profile['id'],
+      email: profile['email'],
+      provider: 'facebook',
+      avatar_url: profile['picture']['data']['url'],
+      full_name: profile['name']
+    }
+  end
+
+  def permitted_token_params
+    standardized_params.permit(:token)
   end
 end

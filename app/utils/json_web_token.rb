@@ -1,5 +1,5 @@
 class JsonWebToken
-  SECRET_KEY = '261b7875c79405249d42a31d00a19fdbd8fc1cc98e354ccdc960dfd9e2b7d7b6992275e55cb7a4b1ac8457d3b5151a31231cd9854487515ecba0e1c4ddb94202'
+  SECRET_KEY = ENV['DEVISE_JWT_SECRET_KEY']
 
   def self.encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i

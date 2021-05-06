@@ -30,7 +30,7 @@ RSpec.describe "Users", type: :request do
           get ME_ENPOINT, headers: authenticated_header(current_user.id)
         end
 
-        it 'return 200 status' do
+        it 'return success status' do
           expect(response).to have_http_status(:success)
         end
 

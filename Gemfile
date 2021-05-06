@@ -19,6 +19,7 @@ gem 'active_model_serializers', '~> 0.10.12'
 gem 'jwt', '~> 2.2.3'
 gem 'bcrypt', '~> 3.1.7'
 gem 'rack-cors', '~> 1.1.1'
+gem 'koala', '~> 3.0'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -38,6 +39,10 @@ group :development, :test do
   gem 'rails-controller-testing', '~> 1.0.5'
   gem 'faker', '~> 2.17.0'
   gem 'factory_girl_rails', '~> 4.9.0'
+  gem 'phantomjs', '~> 2.1.1.0'
+  gem 'poltergeist', '~> 1.18.1'
+  gem 'capybara', '~> 3.35.3'
+  gem 'dotenv-rails'
 end
 
 group :development do
