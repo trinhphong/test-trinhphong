@@ -2,7 +2,7 @@ Given(/^Stub Facebook Request$/) do
   @old_count_user = User.count
   stub_request(:post, "https://graph.facebook.com/oauth/access_token").to_return(status: 200, body: "", headers: {})
   stub_request(:get, "http://facebook.com/api/v1/get_token").to_return(status: 200, body: '', headers: {})
-  stub_request(:get, "http://graph.facebook.com/me?fields=id,%20name,%20email,%20picture").to_return(status: 200, body:       {
+  stub_request(:get, "http://graph.facebook.com/me?fields=id,%20name,%20email,%20picture").to_return(status: 200, body: {
     email: 'test@yopmail.com',
     id: '123',
     name: 'Full Name',

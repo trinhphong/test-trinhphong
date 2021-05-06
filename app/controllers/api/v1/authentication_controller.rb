@@ -6,12 +6,7 @@ class Api::V1::AuthenticationController < Api::V1::ApplicationController
       return render_error('No token provided', status: :unauthorized)
     end
 
-    oauth = Koala::Facebook::OAuth.new
-    new_access_info = oauth.exchange_access_token_info(permitted_token_params[:token])
-    new_access_token = new_access_info["access_token"]
-    new_access_expires_at = DateTime.now + new_access_info["expires_in"].to_i.seconds
-    graph = Koala::Facebook::API.new(new_access_token)
-    profile = graph.get_object('me', fields: 'id, name, email, picture')
+    profile = FacebookConnector.get_profile(permitted_token_params[:token])
 
     if !profile
       return render_error('Not found facebook user', status: :unauthorized)

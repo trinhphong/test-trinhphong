@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users", type: :request do
+RSpec.describe 'Users', type: :request do
   USERS_ENDPOINT =  '/api/v1/users'
   ME_ENPOINT = USERS_ENDPOINT + '/me'
 
@@ -13,9 +13,8 @@ RSpec.describe "Users", type: :request do
     end
 
     context 'logged in' do
-      let(:current_user) { create(:user) }
-
       context 'valid params' do
+        let(:current_user) { create(:user) }
         let(:valid_attributes) do
           {
             email: current_user.email,
