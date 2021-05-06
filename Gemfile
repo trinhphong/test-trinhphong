@@ -36,6 +36,8 @@ group :development, :test do
   gem 'cucumber-rails', '~> 2.3.0', require: false
   gem 'database_cleaner', '~> 2.0.1'
   gem 'rails-controller-testing', '~> 1.0.5'
+  gem 'faker', '~> 2.17.0'
+  gem 'factory_girl_rails', '~> 4.9.0'
 end
 
 group :development do
