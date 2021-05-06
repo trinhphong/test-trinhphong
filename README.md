@@ -1,24 +1,13 @@
-# README
+# How to start app locally:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- Clone this repo `git clone git@github.com:trinhphong/test-trinhphong.git`
+- `bundle install` to install all dependencies
+- `touch .env` and copy/paste environment variable which is attached on the email
+- `rails db:create` to create database
+- `rails db:migrate` to make all database migrations
+- `rails s` to start the local server
 
-Things you may want to cover:
+# How to run tests:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- `rspec --format documentation` to run the rspec tests
+- `cucumber` to run the cucumber tests
