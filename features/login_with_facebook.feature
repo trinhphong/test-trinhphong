@@ -1,14 +1,18 @@
-Feature: Login With Facebook
-  As a guest
-  I want our users to be allowed login via facebook
+Feature: Testing Login Facebook API
+  Frontend is allowed make POST requests to the api and received responses with JWT token.
 
-  Scenario: User visit the root page
-    When I go to the homepage
-    Then I see a Facebook Login button
+  Background: Stub Facebook Request
+    Given Stub Facebook Request
 
-  # @javascript
-  # Scenario: User loggin by clicking on LOGIN WITH FACEBOOK button
-  #   When I go to the homepage
-  #   Then I see a Facebook Login button
-  #   When I click on the LOGIN WITH FACEBOOK
-  #   Then I see a pop up which ask facebook permission
+  Scenario: FE send a request without Facebook's access token
+    When FE send a request no token
+    Then API response an unathorized status
+
+  Scenario: FE send a request with Facebook's access token
+    When FE send a request an authorization token
+    Then API response an success status
+    And  API return a jwt token
+
+  Scenario: A new user request a registration via Facebook
+    When FE send a request an authorization token
+    Then A new user is created

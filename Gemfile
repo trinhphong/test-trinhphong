@@ -38,11 +38,9 @@ group :development, :test do
   gem 'database_cleaner', '~> 2.0.1'
   gem 'rails-controller-testing', '~> 1.0.5'
   gem 'faker', '~> 2.17.0'
-  gem 'factory_girl_rails', '~> 4.9.0'
-  gem 'phantomjs', '~> 2.1.1.0'
-  gem 'poltergeist', '~> 1.18.1'
-  gem 'capybara', '~> 3.35.3'
-  gem 'dotenv-rails'
+  gem 'factory_bot_rails', '~> 6.1.0'
+  gem 'dotenv-rails', '~> 2.7.6'
+  gem 'webmock', '~> 3.12.2'
 end
 
 group :development do

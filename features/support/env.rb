@@ -5,6 +5,11 @@
 # files.
 
 require 'cucumber/rails'
+require 'rspec/rails'
+require 'rspec/expectations'
+require 'webmock/cucumber'
+WebMock.disable_net_connect!(allow_localhost: true)
+World(FactoryBot::Syntax::Methods)
 
 # frozen_string_literal: true
 
@@ -58,3 +63,13 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+RSpec.configure do |config|
+  config.before(:each) do
+    employees_response = {
+      :status => 'success',
+      :data => []
+    }
+    stub_request(:get, "http://facebook.com/api/v1/me").
+    to_return(status: 200, body: employees_response.to_json)
+  end
+end

@@ -2,6 +2,10 @@ class Api::V1::AuthenticationController < Api::V1::ApplicationController
   before_action :authorize_request, except: :facebook
 
   def facebook
+    if !permitted_token_params[:token]
+      return render_error('No token provided', status: :unauthorized)
+    end
+
     oauth = Koala::Facebook::OAuth.new
     new_access_info = oauth.exchange_access_token_info(permitted_token_params[:token])
     new_access_token = new_access_info["access_token"]
@@ -9,12 +13,15 @@ class Api::V1::AuthenticationController < Api::V1::ApplicationController
     graph = Koala::Facebook::API.new(new_access_token)
     profile = graph.get_object('me', fields: 'id, name, email, picture')
 
+    if !profile
+      return render_error('Not found facebook user', status: :unauthorized)
+    end
+
     user = User.find_by(email: profile['email'], uid: profile['id'])
 
     if !user
       createData = map_facebook_profile_to_user(profile)
       user = User.create(createData)
-      user.update(encrypted_password: SecureRandom.urlsafe_base64)
     end
 
     token = JsonWebToken.encode(user_id: user.id)
@@ -29,7 +36,8 @@ class Api::V1::AuthenticationController < Api::V1::ApplicationController
       email: profile['email'],
       provider: 'facebook',
       avatar_url: profile['picture']['data']['url'],
-      full_name: profile['name']
+      full_name: profile['name'],
+      encrypted_password: SecureRandom.urlsafe_base64
     }
   end
 
