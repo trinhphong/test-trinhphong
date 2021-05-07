@@ -2,6 +2,9 @@
 
 ## How to setup backend server locally:
 
+We are using `test` branch
+
+- `rvm use` or `rvm use 2.7.3`
 - Clone this repo `git clone git@github.com:trinhphong/test-trinhphong.git`
 - `cd test-trinhphong`
 - `bundle install` to install all dependencies
