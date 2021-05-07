@@ -30,3 +30,6 @@
 
 - `rspec --format documentation` to run the rspec tests
 - `cucumber` to run the cucumber tests
+
+# Video demo
+- `test-trinhphong.mov`
