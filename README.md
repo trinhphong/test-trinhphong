@@ -18,7 +18,7 @@ We are using `test` branch
 # Frontend - Expo Web App
 
 ## How to setup frontend web locally:
-- `cd test-trinhphong/test-trinhphong-expo`
+- `cd test-trinhphong/frontend`
 - `yarn install` to install packages
 - `yarn web` to install expo packages
 
