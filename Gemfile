@@ -41,6 +41,8 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.1.0'
   gem 'dotenv-rails', '~> 2.7.6'
   gem 'webmock', '~> 3.12.2'
+  gem 'capybara', '~> 3.35.3'
+  gem 'selenium-webdriver', '~> 3.5.2'
 end
 
 group :development do

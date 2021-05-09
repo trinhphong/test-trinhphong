@@ -31,8 +31,16 @@ We are using `test` branch
 
 # How to run tests:
 
+## Rspec
 - `rspec --format documentation` to run the rspec tests
+
+## Cucumber
+
+- You have to start the FE for testing User Behaviors
 - `cucumber` to run the cucumber tests
+
+- Testing only Cucumber API: `cucumber ./features/api_features`
+- Testing only User Behaviors: `cucumber ./features/user_behaviours` (Need start FE)
 
 # Video demo
 - `test-trinhphong.mov`

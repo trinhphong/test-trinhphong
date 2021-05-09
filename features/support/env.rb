@@ -8,6 +8,10 @@ require 'cucumber/rails'
 require 'rspec/rails'
 require 'rspec/expectations'
 require 'webmock/cucumber'
+require 'selenium-webdriver'
+require 'capybara'
+require 'capybara/dsl'
+
 WebMock.disable_net_connect!(allow_localhost: true)
 World(FactoryBot::Syntax::Methods)
 
@@ -63,13 +67,20 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
-RSpec.configure do |config|
-  config.before(:each) do
-    employees_response = {
-      :status => 'success',
-      :data => []
-    }
-    stub_request(:get, "http://facebook.com/api/v1/me").
-    to_return(status: 200, body: employees_response.to_json)
-  end
+Capybara.register_driver :selenium do |app|
+  arguments = ["headless","disable-gpu", "no-sandbox", "window-size=1920,1080", "privileged"]
+  preferences = {
+      'download.prompt_for_download': false,
+  }
+  options = Selenium::WebDriver::Chrome::Options.new(args: arguments, prefs: preferences)
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
+
+Capybara.run_server = true
+Capybara.default_driver = :selenium
+Capybara.javascript_driver = :selenium
+Capybara.default_selector = :css
+Capybara.default_max_wait_time = 10
+Capybara.server_port = 3000
+
+World(Capybara::DSL)

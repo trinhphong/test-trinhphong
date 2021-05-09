@@ -1,39 +1,55 @@
-Given(/^Stub Facebook Request$/) do
-  @old_count_user = User.count
-  stub_request(:post, "https://graph.facebook.com/oauth/access_token").to_return(status: 200, body: "", headers: {})
-  stub_request(:get, "http://facebook.com/api/v1/get_token").to_return(status: 200, body: '', headers: {})
-  stub_request(:get, "http://graph.facebook.com/me?fields=id,%20name,%20email,%20picture").to_return(status: 200, body: {
-    email: 'test@yopmail.com',
-    id: '123',
-    name: 'Full Name',
-    picture: {
-      data: {
-        url: 'http://test.url'
-      }
-    }
-  }.to_json, headers: {})
+When(/^User visit our page$/) do
+  visit('http://localhost:19006/login')
 end
 
-When(/^FE send a request no token$/) do
-  @response = post '/api/v1/auth/facebook'
+Then(/^User see the LOGIN WITH FACEBOOK button$/) do
+  expect(page).to have_content("login")
+  expect(page).to have_content("LOGIN WITH FACEBOOK")
 end
 
-Then(/^API response an unathorized status$/) do
-  expect(@response.status).to eq(401)
+And(/^User click on LOGIN WITH FACEBOOK button$/) do
+  click_on 'Login with Facebook'
 end
 
-When(/^FE send a request an authorization token$/) do
-  @response = post '/api/v1/auth/facebook', { token: 'sample_token' }
+Then(/^User fill in email and password then press login$/) do
+  main = page.driver.browser.window_handles.first
+
+  popup = page.driver.browser.window_handles.last
+  page.driver.browser.switch_to.window(popup)
+
+  fill_in 'email', with: 'test_kfscezi_user@tfbnw.net'
+  fill_in 'pass', with: '45tgbhu89'
+  click_on 'Log In'
+
+  page.driver.browser.switch_to.window(main)
 end
 
-Then(/^API response an success status$/) do
-  expect(@response.status).to eq(200)
+Then(/^User is redirected to profile page$/) do
+  expect(page).to have_content("profile")
 end
 
-Then(/^API return a jwt token$/) do
-  expect(@response.body).to include('token')
+And(/^User see their profile$/) do
+  expect(page).to have_content('test_kfscezi_user@tfbnw.net')
+  expect(page).to have_content('Test User')
 end
 
-Then(/^A new user is created$/) do
-  expect(User.count).to eq(@old_count_user + 1)
+@javascript
+And(/^User fill in email and password but not accept permission$/) do
+  main = page.driver.browser.window_handles.first
+
+  popup = page.driver.browser.window_handles.last
+  page.driver.browser.switch_to.window(popup)
+
+  fill_in 'email', with: 'not_ncdpted_user@tfbnw.net'
+  fill_in 'pass', with: '45tgbhu89'
+  click_on 'Log In'
+  # TODO: Investigate why cannot click on button instead of parent class
+  page.find('._9m54').click
+
+  page.driver.browser.switch_to.window(main)
+end
+
+And(/^User still be on login page$/) do
+  expect(page).to have_content("login")
+  expect(page).to have_content("LOGIN WITH FACEBOOK")
 end
