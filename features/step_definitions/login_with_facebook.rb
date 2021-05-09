@@ -33,7 +33,6 @@ And(/^User see their profile$/) do
   expect(page).to have_content('Test User')
 end
 
-@javascript
 And(/^User fill in email and password but not accept permission$/) do
   main = page.driver.browser.window_handles.first
 
@@ -49,7 +48,15 @@ And(/^User fill in email and password but not accept permission$/) do
   page.driver.browser.switch_to.window(main)
 end
 
-And(/^User still be on login page$/) do
+And(/^User is on login page$/) do
   expect(page).to have_content("login")
   expect(page).to have_content("LOGIN WITH FACEBOOK")
+end
+
+And(/^User see the Sign Out button$/) do
+  expect(page).to have_content("SIGN OUT")
+end
+
+Then(/^User click on the Sign Out button$/) do
+  page.find("div[aria-label='Sign Out']").click
 end
