@@ -1,5 +1,5 @@
 When(/^User visit our page$/) do
-  visit('http://localhost:19006/login')
+  visit(ENV['FRONTEND_URL'] + '/login')
 end
 
 Then(/^User see the LOGIN WITH FACEBOOK button$/) do
@@ -19,7 +19,7 @@ Then(/^User fill in email and password then press login$/) do
 
   fill_in 'email', with: 'test_kfscezi_user@tfbnw.net'
   fill_in 'pass', with: '45tgbhu89'
-  click_on 'Log In'
+  page.find('#loginbutton').click
 
   page.driver.browser.switch_to.window(main)
 end
@@ -41,7 +41,7 @@ And(/^User fill in email and password but not accept permission$/) do
 
   fill_in 'email', with: 'not_ncdpted_user@tfbnw.net'
   fill_in 'pass', with: '45tgbhu89'
-  click_on 'Log In'
+  page.find('#loginbutton').click
   # TODO: Investigate why cannot click on button instead of parent class
   page.find('._9m54').click
 
